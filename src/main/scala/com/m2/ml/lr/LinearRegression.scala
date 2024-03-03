@@ -8,7 +8,7 @@ import org.apache.spark.sql.types.{DoubleType, IntegerType, StructField, StructT
 /**
  * Default format : libsvm  (Binomial logistic regression) which can be directly used within API
  * looks like : <label> <index1>:<value1> <index2>:<value2> ... <indexN>:<valueN>
- * ref : https://www.analyticsvidhya.com/blog/2022/08/complete-guide-to-run-machine-learning-on-spark-using-spark-mllib/
+ *
  */
 object LinearRegression {
   def main(args: Array[String]): Unit = {
@@ -16,7 +16,10 @@ object LinearRegression {
       .config("spark.testing.memory", "2147480000")
       .config("spark.driver.memory", "2147480000")
       .master("local").getOrCreate()
-    val dataDF = spark.read.option("header", true).schema(StructType(Seq(StructField("Time_to_Study", IntegerType), StructField("Grades", DoubleType)))).csv("src/test/resources/")
+    val dataDF = spark.read.option("header", true)
+      .schema(StructType(Seq(StructField("Time_to_Study", IntegerType), StructField("Grades", DoubleType))))
+      .csv("src/test/resources/Student*")
+
 
     dataDF.show(false)
     println("getfirstcol:", dataDF.columns.take(1).toString)
@@ -46,3 +49,7 @@ object LinearRegression {
     predictionSummary.predictions.show(false)
   }
 }
+
+/*
+ref : https://www.analyticsvidhya.com/blog/2022/08/complete-guide-to-run-machine-learning-on-spark-using-spark-mllib/
+ */
